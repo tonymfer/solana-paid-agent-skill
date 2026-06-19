@@ -28,6 +28,12 @@ Existing skills help agents pay. Official commerce skills help humans check out.
 - Private balances: use Token-2022 Confidential Transfers.
 - Receipt NFTs/SBT implementation: use Metaplex.
 
+## Example and templates
+
+- Complete mock Paid MCP design: `examples/paid-mcp-launch-report.md`.
+- Planning schemas: `templates/payment-required-response.json`, `templates/payment-proof-retry.json`, `templates/success-receipt.json`.
+- Suggested Solana AI Kit registry entry: `integration/skill-registry-entry.json`.
+
 ## Always apply rules
 
 - `rules/custody.md`
@@ -53,3 +59,54 @@ Existing skills help agents pay. Official commerce skills help humans check out.
 2. For Paid MCP/x402, load `seller-side-x402.md` first, then `usage-metering.md`, then `testing-and-simulation.md`.
 3. For any transaction or wallet concern, load `safety-and-signing.md` and all rules before proposing implementation details.
 4. If exact protocol fields are required, verify current upstream docs before writing code.
+
+## Output templates
+
+### 1. Paid MCP / API design brief
+
+```md
+## Seller-side paid-agent design
+- Product being sold:
+- Protected resource/tool/API:
+- Payment route: official checkout / facilitator / payer-side x402 / other
+- Quote fields: price, asset, network, recipient/facilitator, expiry, resource hash, idempotency key
+- Verification source:
+- Access grant scope:
+- Usage ledger states:
+- Refund/credit/manual-review states:
+- Safety gates and human approvals:
+- Routes to existing Solana AI Kit skills:
+- Blockers / upstream docs to verify:
+```
+
+### 2. 402 challenge sketch
+
+Use only as a planning schema until current upstream x402 field names are verified.
+
+```json
+{
+  "type": "payment_required",
+  "quote_id": "quote_...",
+  "resource": "mcp.tool.name or /api/path",
+  "resource_hash": "sha256:...",
+  "price": { "amount": "1.00", "asset": "USDC", "network": "solana" },
+  "recipient": "merchant_or_facilitator_identifier",
+  "expires_at": "2026-01-01T00:00:00Z",
+  "idempotency_key": "idem_...",
+  "retry_with": { "payment_reference": "..." }
+}
+```
+
+### 3. Launch readiness verdict
+
+```md
+Verdict: pass / needs changes / blocked
+Seller-side fit:
+Payment challenge completeness:
+Proof verification gaps:
+Metering and idempotency gaps:
+Access-grant boundaries:
+Signing/custody risks:
+Official-skill routes used:
+Required fixes before launch:
+```

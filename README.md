@@ -6,6 +6,14 @@ It complements checkout/payment and payer-side x402 skills; it does not reimplem
 
 Existing skills help agents pay. Official commerce skills help humans check out. This skill helps Solana builders get paid safely for their own agents, APIs, and MCP tools.
 
+## Why this belongs in Solana AI Kit
+
+- Solana AI Kit already routes builders to payments, Token-2022, Metaplex, and x402 primitives; this skill connects those primitives into a seller-side agent monetization workflow.
+- It fills the gap between human checkout and payer-side x402: builders exposing paid APIs, MCP tools, and agent services need quote, proof, metering, and access-grant discipline.
+- It is intentionally additive: it routes checkout, private balances, and receipt NFTs to existing official skills instead of duplicating them.
+- It keeps unsafe wallet behavior out of the agent loop by default: no custody, no auto-signing, no credentials, no live transactions in validation.
+- It gives agents concrete output templates for 402 challenges, verification checks, ledgers, and launch readiness reviews.
+
 ## What this is
 
 This is a lean documentation/agent-skill router for builders designing seller-side paid access. It is not a payment processor, facilitator, wallet, checkout UI, or generic payer-side x402 client.
@@ -16,6 +24,16 @@ Use it when you are exposing a paid Solana-aware API, MCP tool, or agent service
 - Paid MCP tool calls.
 - Quote, payment observation, verification, access granting, metering, and refund/credit state separation.
 - Safety review around wallet, signing, custody, credentials, and transaction previews.
+
+## 30-second example use
+
+Ask your agent:
+
+```txt
+Use solana-paid-agent-skill to design a seller-side paid MCP tool for generate_agent_launch_report. Return the 402 challenge, proof retry shape, verification checklist, ledger states, access grant scope, and launch blockers. Do not add wallet connection, signing, custody, or live transaction steps.
+```
+
+Expected output: a bounded paid-access design with a `payment_required` response, resource-hash/idempotency binding, verifier assumptions, retry semantics, receipt metadata, and explicit routes to official Payments & Commerce, payer-side x402, Token-2022, or Metaplex where this skill should not reimplement primitives. See `examples/paid-mcp-launch-report.md`.
 
 ## What this routes to instead of reimplementing
 
@@ -80,7 +98,19 @@ Builder proposes a flow where an agent signs or refunds automatically. Expected 
 
 ## Install
 
-Run:
+Recommended Claude Code / Solana AI Kit install:
+
+```sh
+bash install.sh --target ~/.claude/skills/solana-paid-agent-skill
+```
+
+Project-local install:
+
+```sh
+bash install.sh --target ./.claude/skills/solana-paid-agent-skill
+```
+
+Optional Hermes install:
 
 ```sh
 bash install.sh --target ~/.hermes/skills/solana-paid-agent-skill
@@ -93,3 +123,21 @@ The installer performs only local file copies. It does not fetch from the networ
 ```sh
 bash tests/validate_structure.sh
 ```
+
+The validation checks required files, executable scripts, Claude/Solana AI Kit install targets, output templates, example artifacts, registry entry shape, unfinished-marker absence, and no obvious wallet/signing/network/credential behavior.
+
+## Included artifacts
+
+- `skill/SKILL.md` — progressive router and output templates.
+- `skill/*.md` — focused architecture, seller-side x402, metering, safety, and testing modules.
+- `commands/*.md` — reusable audit and launch-checklist prompts.
+- `rules/*.md` — custody, signing, and payment hard rules.
+- `agents/signing-safety-reviewer.md` — focused reviewer for risky wallet/payment flows.
+- `examples/paid-mcp-launch-report.md` — complete mock Paid MCP design example.
+- `templates/*.json` — copyable planning schemas for challenge, proof retry, and success receipt.
+- `templates/submission-questionnaire.md` — ready-to-adapt bounty submission answers.
+- `templates/demo-script.md` — short judge/maintainer walkthrough.
+- `templates/risk-register.md` — seller-side paid-agent risk table.
+- `integration/skill-registry-entry.json` — suggested Solana AI Kit registry entry.
+- `scripts/validate.py` and `.github/workflows/validate.yml` — Python validation and CI workflow.
+- `install.sh` — safe local-copy installer with default Claude Code path and dry-run mode.

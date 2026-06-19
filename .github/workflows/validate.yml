@@ -1,0 +1,21 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Shell validation
+        run: bash tests/validate_structure.sh
+      - name: Python validation
+        run: python3 scripts/validate.py
+      - name: Installer dry run
+        run: bash install.sh --dry-run

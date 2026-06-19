@@ -1,0 +1,10 @@
+{
+  "status": "succeeded_consumed",
+  "result_ref": "result_or_cache_key",
+  "receipt": {
+    "quote_id": "quote_...",
+    "payment_reference_hash": "sha256:payment-reference",
+    "consumed_units": 1,
+    "access_scope": "single_tool_call"
+  }
+}

@@ -12,7 +12,7 @@ Run:
 bash tests/validate_structure.sh
 ```
 
-The script checks required files, exact lean structure, executable installer, key positioning phrases, safety phrases, and obvious placeholder markers in core docs.
+The script checks required files, exact lean structure, executable installer, Claude/Solana AI Kit install path, dry-run installer behavior, key positioning phrases, output templates, example artifacts, registry entry shape, safety phrases, and obvious placeholder markers in core docs.
 
 ## Flow simulation targets
 

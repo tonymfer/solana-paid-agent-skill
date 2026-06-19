@@ -35,6 +35,70 @@ Specify seller-side x402-style paid API/MCP flows without reimplementing a full 
 - Tool returns receipt metadata, consumed units, and remaining access scope.
 - Protected output is not leaked before payment verification.
 
+## Concrete planning schema
+
+Use this as a product/agent planning schema, not a claim that every x402 implementation uses these exact field names. Before writing protocol code, verify the current upstream package/facilitator docs.
+
+### 402 / payment-required response
+
+```json
+{
+  "type": "payment_required",
+  "quote_id": "quote_2026_001",
+  "resource": "mcp.generate_agent_launch_report",
+  "resource_hash": "sha256:request-body-or-tool-args",
+  "price": {
+    "amount": "1.00",
+    "asset": "USDC",
+    "network": "solana"
+  },
+  "recipient": "merchant_or_facilitator_identifier",
+  "expires_at": "2026-01-01T00:05:00Z",
+  "idempotency_key": "idem_user_resource_quote",
+  "retry_with": {
+    "payment_reference": "transaction_or_facilitator_reference"
+  }
+}
+```
+
+### Payment proof retry
+
+```json
+{
+  "quote_id": "quote_2026_001",
+  "idempotency_key": "idem_user_resource_quote",
+  "payment_reference": "transaction_or_facilitator_reference",
+  "resource_hash": "sha256:request-body-or-tool-args"
+}
+```
+
+### Success response
+
+```json
+{
+  "status": "succeeded_consumed",
+  "result_ref": "result_or_cache_key",
+  "receipt": {
+    "quote_id": "quote_2026_001",
+    "payment_reference_hash": "sha256:payment-reference",
+    "consumed_units": 1,
+    "access_scope": "single_tool_call"
+  }
+}
+```
+
+## Verification matrix
+
+| Check | Accept when | Reject/manual-review when |
+|---|---|---|
+| Quote binding | quote ID, resource hash, and idempotency key match | missing, mismatched, or reused for different resource |
+| Amount/asset/network | exact quoted amount, supported asset, expected network | underpaid, wrong token, wrong network |
+| Recipient/facilitator | expected merchant/facilitator route | unexpected payee or ambiguous route |
+| Expiry | payment observed before quote expiry | expired quote or unclear timestamp |
+| Replay | proof not previously consumed | proof already consumed or duplicate retry with different body |
+| Confirmation | verifier reports acceptable confirmation state | verifier unavailable, pending too long, or conflicting result |
+| Access scope | bounded to one job/resource/window | broad reusable access not explicitly priced |
+
 ## Verification concepts
 
 Reject proofs that are:

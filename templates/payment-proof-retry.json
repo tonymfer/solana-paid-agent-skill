@@ -1,0 +1,6 @@
+{
+  "quote_id": "quote_...",
+  "idempotency_key": "idem_...",
+  "payment_reference": "transaction_or_facilitator_reference",
+  "resource_hash": "sha256:..."
+}

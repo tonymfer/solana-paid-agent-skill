@@ -1,0 +1,17 @@
+{
+  "type": "payment_required",
+  "quote_id": "quote_...",
+  "resource": "mcp.tool.name or /api/path",
+  "resource_hash": "sha256:...",
+  "price": {
+    "amount": "1.00",
+    "asset": "USDC",
+    "network": "solana"
+  },
+  "recipient": "merchant_or_facilitator_identifier",
+  "expires_at": "2026-01-01T00:05:00Z",
+  "idempotency_key": "idem_...",
+  "retry_with": {
+    "payment_reference": "transaction_or_facilitator_reference"
+  }
+}

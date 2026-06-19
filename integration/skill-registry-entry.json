@@ -1,0 +1,31 @@
+{
+  "id": "solana-paid-agent-skill",
+  "name": "Solana Paid Agent Skill",
+  "type": "skill-addon",
+  "domain": "payments-agent-commerce",
+  "description": "Seller-side paid-agent rails for Solana AI agents, APIs, and MCP tools: x402-style 402 challenges, payment verification, usage metering, bounded access grants, receipts, and signing/custody safety.",
+  "source": "https://github.com/tonymfer/solana-paid-agent-skill",
+  "install": {
+    "method": "local-copy-or-submodule",
+    "target": ".claude/skills/solana-paid-agent-skill",
+    "command": "bash install.sh --target ./.claude/skills/solana-paid-agent-skill"
+  },
+  "license": "MIT",
+  "default_installed": false,
+  "safety": "No network fetches in installer; no wallet connection, signing, broadcasting, transactions, custody, seed phrases, private keys, or credentials. Uses mock/local validation by default.",
+  "complements": [
+    "Payments & Commerce / Commerce Kit / Solana Pay",
+    "payer-side x402 skills",
+    "Token-2022 Confidential Transfers",
+    "Metaplex"
+  ],
+  "tags": [
+    "x402",
+    "paid-mcp",
+    "paid-api",
+    "agent-commerce",
+    "usage-metering",
+    "payment-verification",
+    "signing-safety"
+  ]
+}
